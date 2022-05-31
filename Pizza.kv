@@ -1,31 +1,65 @@
 #:import utils kivy.utils
 #:set color1 '#DD7835'
 #:set color2 '#C8C8C8'
-
+#:set color3 '#FFFFFF'
 
 MainWidget:
 
 <CoverImage@CoverBehavior+Image>:
     reference_size: self.texture_size
+    canvas:
+        Color:
+            rgba: 0, 0, 0, .6
+        Rectangle:
+            pos: root.pos
+            size: root.size
 
 <MainWidget>:
     recycleView: recycleView
     CoverImage:
         source: "images/menu_background.jpg"
-    RecycleView:
-        id: recycleView
-        viewclass: 'PizzaWidget'
-        RecycleBoxLayout:
-            default_size: None, dp(56)
-            default_size_hint: 1, None
-            size_hint_y: None
-            height: self.minimum_height
-            orientation: 'vertical'
-            spacing: dp(16)
-
-<PizzaWidget>:
-    spacing: "10dp"
+    
     BoxLayout:
+        orientation: "vertical"
+        
+        
+        
+        Image:
+            source: "images/small_logo.png"
+            allow_stretch: True
+            size_hint: None, None
+            size: dp(150), dp(60)
+            pos_hint: { "center_x": .5 }
+ 
+        TitleLabel:
+            text: "Les pizzas"
+            color: utils.get_color_from_hex(color2)
+            padding: dp(16), dp(3)
+            bold: True
+            font_size: dp(22)    
+        BoxLayout:
+            padding: dp(20), dp(20)
+            RecycleView:
+                id: recycleView
+                viewclass: 'PizzaWidget'
+                RecycleBoxLayout:
+                    default_size: None, dp(56)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: 'vertical'
+                    spacing: dp(16)
+        
+            
+                
+            
+<PizzaWidget>:
+        
+    spacing: "10dp"        
+    BoxLayout:      
+        size_hint_max_x: dp(300)  
+        size_hint_min_x: dp(150)  
+
         spacing: "10dp"
         orientation: 'vertical'
         BoxLayout:
@@ -43,6 +77,9 @@ MainWidget:
         text: str(root.prix)+"€"       
         font_size: dp(20)
         color: utils.get_color_from_hex(color1)
+        pos_hint: {"top": 0.9}
+
+
 <Badge@FitLabel>:
     color: 0, 0, 0, 1
     bold: True
@@ -58,6 +95,15 @@ MainWidget:
 <FitLabel@Label>:
     size_hint: None, None
     size: self.texture_size
+
+
+<TitleLabel@FitLabel>:
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex(color1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
 
 
 <LeftAlignLabel@Label>:
