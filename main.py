@@ -4,7 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.behaviors import CoverBehavior
 from kivy.uix.widget import Widget
-
+from kivy.lang import Builder
 from models import Pizza
 
 
@@ -33,9 +33,12 @@ class MainWidget(FloatLayout):
     
     
 
+with open("pizzascr.kv", encoding='utf8') as f:
+    Builder.load_string(f.read())
 
 class PizzaApp(App):
-    pass
+    def build(self):
+        return MainWidget()
 
 
 PizzaApp().run()
