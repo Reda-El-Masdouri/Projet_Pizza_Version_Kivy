@@ -20,19 +20,20 @@ class PizzaWidget(BoxLayout):
 class MainWidget(FloatLayout):
     recycleView = ObjectProperty(None)
 
-    """def __init__(self, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.pizzas = [
+        """self.pizzas = [
             Pizza("4 fromages", "chèvre, emmental, brie, comté", 9.5, True),
             Pizza("Chorizo", "tomates, chorizo, parmesan", 11.2, False),
             Pizza("Calzone", "fromage, jambon, champignons", 10, False)
         ]"""
-    HttpClient().get_pizzas()
+        HttpClient().get_pizzas(self.on_server_data)
     """def on_parent(self, widget, parent):
         l = [pizza.get_dictionary() for pizza in self.pizzas]
         self.recycleView.data = l"""
     
-    
+    def on_server_data(self, pizzas_dict):
+        self.recycleView.data = pizzas_dict
 
 with open("pizzascr.kv", encoding='utf8') as f:
     Builder.load_string(f.read())
