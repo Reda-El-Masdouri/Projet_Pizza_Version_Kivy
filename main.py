@@ -1,3 +1,4 @@
+from tkinter import Label
 from kivy.app import App
 from kivy.properties import *
 from kivy.uix.boxlayout import BoxLayout
@@ -17,9 +18,10 @@ class PizzaWidget(BoxLayout):
     vegetarienne = BooleanProperty()
 
 
+
 class MainWidget(FloatLayout):
     recycleView = ObjectProperty(None)
-
+    error_str = StringProperty("")
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         """self.pizzas = [
@@ -27,7 +29,7 @@ class MainWidget(FloatLayout):
             Pizza("Chorizo", "tomates, chorizo, parmesan", 11.2, False),
             Pizza("Calzone", "fromage, jambon, champignons", 10, False)
         ]"""
-        HttpClient().get_pizzas(self.on_server_data)
+        HttpClient().get_pizzas(self.on_server_data, self.on_server_error)
     """def on_parent(self, widget, parent):
         l = [pizza.get_dictionary() for pizza in self.pizzas]
         self.recycleView.data = l"""
@@ -35,6 +37,10 @@ class MainWidget(FloatLayout):
     def on_server_data(self, pizzas_dict):
         self.recycleView.data = pizzas_dict
 
+    def on_server_error(self, error):
+        print("ERREUR: "+ str(error))
+        self.error_str = "ERREUR: "+ str(error)
+        
 with open("pizzascr.kv", encoding='utf8') as f:
     Builder.load_string(f.read())
 
