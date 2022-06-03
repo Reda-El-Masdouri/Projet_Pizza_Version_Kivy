@@ -8,6 +8,7 @@ from kivy.uix.widget import Widget
 from kivy.lang import Builder
 from http_client import HttpClient
 from models import Pizza
+from storage_manager import StorageManager
 
 
 class PizzaWidget(BoxLayout):
@@ -30,17 +31,21 @@ class MainWidget(FloatLayout):
             Pizza("Calzone", "fromage, jambon, champignons", 10, False)
         ]"""
         HttpClient().get_pizzas(self.on_server_data, self.on_server_error)
-    """def on_parent(self, widget, parent):
-        l = [pizza.get_dictionary() for pizza in self.pizzas]
-        self.recycleView.data = l"""
+    def on_parent(self, widget, parent):
+        #l = [pizza.get_dictionary() for pizza in self.pizzas]
+        pizza_dict = StorageManager().load_data('pizza')
+        if pizza_dict:
+            self.recycleView.data = pizza_dict
+
     
     def on_server_data(self, pizzas_dict):
         self.recycleView.data = pizzas_dict
+        StorageManager().save_data("pizza", pizzas_dict)
 
     def on_server_error(self, error):
         print("ERREUR: "+ str(error))
         self.error_str = "ERREUR: "+ str(error)
-        
+
 with open("pizzascr.kv", encoding='utf8') as f:
     Builder.load_string(f.read())
 
